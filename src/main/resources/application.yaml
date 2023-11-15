@@ -1,0 +1,27 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      groupId: ${KAFKA_GROUP_ID}
+      keyDeserializer: ${KAFKA_KEY_DESERIALIZER}
+      valueDeserializer: ${KAFKA_VALUE_DESERIALIZER}
+      trustedPackages: ${KAFKA_TRUSTED_PACKAGES}
+  mail:
+    host: ${SPRING_MAIL_HOST}
+    port: ${SPRING_MAIL_PORT}
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        debug: false
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: 8082
+topics: ${KAFKA_SUBSCRIBED_TOPICS}
