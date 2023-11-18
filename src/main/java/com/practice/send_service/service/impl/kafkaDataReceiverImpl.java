@@ -2,7 +2,7 @@ package com.practice.send_service.service.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.practice.send_service.config.LocalDateTimeDeserializer;
+import com.practice.send_service.config.DateDeserializer;
 import com.practice.send_service.domain.departmentManager.employee.Remind;
 import com.practice.send_service.service.KafkaDataReceiver;
 import com.practice.send_service.service.KafkaDataService;
@@ -11,14 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.kafka.receiver.KafkaReceiver;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 public class kafkaDataReceiverImpl implements KafkaDataReceiver{
 
     private final KafkaReceiver<String, Object> receiver;
-    private final LocalDateTimeDeserializer localDateTimeDeserializer;
+    private final DateDeserializer dateDeserializer;
     private final KafkaDataService kafkaDataService;
 
     @PostConstruct
@@ -29,8 +29,8 @@ public class kafkaDataReceiverImpl implements KafkaDataReceiver{
     @Override
     public void fetch() {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class,
-                        localDateTimeDeserializer)
+                .registerTypeAdapter(Date.class,
+                        dateDeserializer)
                 .create();
         receiver.receive()
                 .subscribe(r -> {
